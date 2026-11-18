@@ -2,6 +2,9 @@ let id = 1;
 
 const submitButton = document.querySelector('#save-btn');
 
+function getCurrentDate() {
+    return new Date().toLocaleDateString('en-CA');
+};
 
 function addData(e) {
     e.preventDefault();
@@ -32,6 +35,14 @@ function addData(e) {
     <td>${name}</td>
     <td>${description}</td>
     <td>${priority}</td>
+    <td>${getCurrentDate()}</td>
+    <td>
+        <select class="status-select">
+            <option value="open" selected>Open</option>
+            <option value="in-progress">In Progress</option>
+            <option value="closed">Closed</option>
+        </select>
+    </td>
     </tr>`;
 
     table.insertAdjacentHTML("beforeend", row);
