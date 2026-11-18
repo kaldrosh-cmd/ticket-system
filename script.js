@@ -1,4 +1,5 @@
 let id = 1;
+const tickets = [];
 
 const submitButton = document.querySelector('#save-btn');
 
@@ -9,12 +10,13 @@ function getCurrentDate() {
 function addData(e) {
     e.preventDefault();
 
-    let name = document.getElementById("name").value;
+    let title = document.getElementById("title").value;
     let description = document.getElementById("description").value;
     let priority = document.getElementById("priority").value;
+    const currentDate = getCurrentDate();
 
-    if (name === "") {
-        alert("Please fill name field");
+    if (title === "") {
+        alert("Please fill title field");
         return;
     }
 
@@ -29,13 +31,14 @@ function addData(e) {
     };
 
     let table = document.getElementById("tableBody");
+
     let row = `
     <tr ${rowStyle}>
     <td>${id}</td>
-    <td>${name}</td>
+    <td>${title}</td>
     <td>${description}</td>
     <td>${priority}</td>
-    <td>${getCurrentDate()}</td>
+    <td>${currentDate}</td>
     <td>
         <select class="status-select">
             <option value="open" selected>Open</option>
@@ -47,9 +50,18 @@ function addData(e) {
 
     table.insertAdjacentHTML("beforeend", row);
 
+    tickets.push({
+        id: id,
+        title: title,
+        description: description,
+        priority: priority,
+        date: currentDate,
+        status: "open"
+    });
+
     id++
 
-    document.getElementById("name").value = "";
+    document.getElementById("title").value = "";
     document.getElementById("description").value = "";
     document.getElementById("priority").value = "medium";
 }
