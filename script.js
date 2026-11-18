@@ -20,35 +20,7 @@ function addData(e) {
         return;
     }
 
-    let rowStyle = "";
-
-    if (priority === "low") {
-        rowStyle = 'style="background-color: green;"';
-    } else if (priority === "medium") {
-        rowStyle = 'style="background-color: yellow;"'
-    } else if (priority === "high") {
-        rowStyle = 'style="background-color: red;"'
-    };
-
     let table = document.getElementById("tableBody");
-
-    let row = `
-    <tr ${rowStyle}>
-    <td>${id}</td>
-    <td>${title}</td>
-    <td>${description}</td>
-    <td>${priority}</td>
-    <td>${currentDate}</td>
-    <td>
-        <select class="status-select">
-            <option value="open" selected>Open</option>
-            <option value="in-progress">In Progress</option>
-            <option value="closed">Closed</option>
-        </select>
-    </td>
-    </tr>`;
-
-    table.insertAdjacentHTML("beforeend", row);
 
     tickets.push({
         id: id,
@@ -59,11 +31,42 @@ function addData(e) {
         status: "open"
     });
 
-    id++
+    id++;
 
     document.getElementById("title").value = "";
     document.getElementById("description").value = "";
     document.getElementById("priority").value = "medium";
+
+    renderTable();
+}
+
+function renderTable() {
+    const tbody = document.querySelector('#tableBody');
+
+    if (!tbody) return;
+
+    const rows = tickets.map(ticket => {
+        const tr = document.createElement('tr');
+
+        const values = [
+            ticket.id,
+            ticket.title,
+            ticket.description,
+            ticket.priority,
+            ticket.date,
+            ticket.status
+        ];
+
+        values.forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+
+        return tr;
+    })
+    
+    tbody.replaceChildren(...rows)
 }
 
 submitButton.addEventListener('click', addData);
