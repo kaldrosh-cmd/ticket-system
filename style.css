@@ -12,12 +12,18 @@ body {
   margin: 0;
   gap: 20px;
 }
-
-.submitbox, .submittable {
+.submitbox {
   width: 100%;
   max-width: 500px;
   border: 1px solid #ccc;
   padding: 20px;
+}
+.submittable {
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  overflow-x: auto;
 }
 
 form {
@@ -34,6 +40,7 @@ input, textarea, select, button {
 table {
   width: 100%;
   border-collapse: collapse;
+  word-break: break-word;
 }
 
 th, td {

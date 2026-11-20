@@ -1,72 +1,45 @@
+const ticketForm = document.querySelector('#ticket-form');
+const tbody = document.getElementById('tableBody');
+
 let id = 1;
 const tickets = [];
 
-const submitButton = document.querySelector('#save-btn');
+const renderTable = function() {
+    tbody.replaceChildren();
 
-function getCurrentDate() {
-    return new Date().toLocaleDateString('en-CA');
-};
+    tickets.forEach(ticket => {
+        const row = tbody.insertRow();
+        row.insertCell().textContent = ticket.id;
+        row.insertCell().textContent = ticket.title;
+        row.insertCell().textContent = ticket.description;
+        row.insertCell().textContent = ticket.priority;
+        row.insertCell().textContent = ticket.date;
+        row.insertCell().textContent = ticket.status;
+    });
+}
 
-function addData(e) {
+function addTicket(e) {
     e.preventDefault();
 
-    let title = document.getElementById("title").value;
-    let description = document.getElementById("description").value;
-    let priority = document.getElementById("priority").value;
-    const currentDate = getCurrentDate();
-
-    if (title === "") {
-        alert("Please fill title field");
-        return;
-    }
-
-    let table = document.getElementById("tableBody");
+    const formData = new FormData(e.target);
 
     tickets.push({
-        id: id,
-        title: title,
-        description: description,
-        priority: priority,
-        date: currentDate,
+        id: id++,
+        title: formData.get('title'),
+        description: formData.get('description'),
+        priority: formData.get('priority'),
+        date: getDate(),
         status: "open"
     });
 
-    id++;
-
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("priority").value = "medium";
-
     renderTable();
+    e.target.reset();
 }
 
-function renderTable() {
-    const tbody = document.querySelector('#tableBody');
-
-    if (!tbody) return;
-
-    const rows = tickets.map(ticket => {
-        const tr = document.createElement('tr');
-
-        const values = [
-            ticket.id,
-            ticket.title,
-            ticket.description,
-            ticket.priority,
-            ticket.date,
-            ticket.status
-        ];
-
-        values.forEach(value => {
-            const td = document.createElement('td');
-            td.textContent = value;
-            tr.appendChild(td);
-        });
-
-        return tr;
-    })
-    
-    tbody.replaceChildren(...rows)
+function getDate() {
+    const currentTime = new Date().toLocaleString('pl-PL');
+    return currentTime;
 }
 
-submitButton.addEventListener('click', addData);
+
+ticketForm.addEventListener('submit', addTicket)
