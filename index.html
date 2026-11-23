@@ -14,14 +14,17 @@
         <form action="" method="post" id="ticket-form">
             <div>
                 <label for="title">Title:</label>
+                <p id="title-error"></p>
                 <input type="text" id="title" name="title" required>
             </div>
             <div>
                 <label for="description">Description:</label>
+                <p id="description-error"></p>
                 <textarea id="description" name="description" rows="4" placeholder="Write it down here."></textarea>
             </div>
             <div>
                 <label for="priority">Priority:</label>
+                <p id="priority-error"></p>
                 <select id="priority" name="priority">
                     <option value="low">Low</option>
                     <option value="medium" selected>Medium</option>

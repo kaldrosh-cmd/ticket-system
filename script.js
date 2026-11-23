@@ -1,45 +1,69 @@
-const ticketForm = document.querySelector('#ticket-form');
-const tbody = document.getElementById('tableBody');
+const ticketForm = document.querySelector("#ticket-form");
+const titleError = document.querySelector("#title-error");
+const descriptionError = document.querySelector("#description-error");
+const priorityError = document.querySelector("#priority-error");
+const tbody = document.getElementById("tableBody");
 
 let id = 1;
 const tickets = [];
 
-const renderTable = function() {
-    tbody.replaceChildren();
+const renderTable = function () {
+  tbody.replaceChildren();
 
-    tickets.forEach(ticket => {
-        const row = tbody.insertRow();
-        row.insertCell().textContent = ticket.id;
-        row.insertCell().textContent = ticket.title;
-        row.insertCell().textContent = ticket.description;
-        row.insertCell().textContent = ticket.priority;
-        row.insertCell().textContent = ticket.date;
-        row.insertCell().textContent = ticket.status;
-    });
-}
+  tickets.forEach((ticket) => {
+    const row = tbody.insertRow();
+    row.insertCell().textContent = ticket.id;
+    row.insertCell().textContent = ticket.title;
+    row.insertCell().textContent = ticket.description;
+    row.insertCell().textContent = ticket.priority;
+    row.insertCell().textContent = ticket.date;
+    row.insertCell().textContent = ticket.status;
+  });
+};
 
 function addTicket(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData(e.target);
+  titleError.textContent = "";
+  descriptionError.textContent = "";
+  priorityError.textContent = "";
 
-    tickets.push({
-        id: id++,
-        title: formData.get('title'),
-        description: formData.get('description'),
-        priority: formData.get('priority'),
-        date: getDate(),
-        status: "open"
-    });
+  const formData = new FormData(e.target);
+  const title = formData.get("title").trim();
+  const description = formData.get("description").trim();
+  const priority = formData.get("priority").trim();
 
-    renderTable();
-    e.target.reset();
+  if (title.length < 3 || title.length > 100) {
+    titleError.textContent = "Title needs to be from 3 to 100 characters long";
+    return;
+  }
+  if (description.length > 500) {
+    descriptionError.textContent =
+      "Description needs to be no more than 500 characters long";
+    return;
+  }
+  if (!["low", "medium", "high"].includes(priority)) {
+    priorityError.textContent =
+      "Priority needs to be either low, medium or high";
+    return;
+  }
+
+  tickets.push({
+    id: id++,
+    title,
+    description,
+    priority,
+    date: getDate(),
+    status: "open",
+  });
+
+  renderTable();
+  e.target.reset();
 }
 
 function getDate() {
-    const currentTime = new Date().toLocaleString('pl-PL');
-    return currentTime;
+  const currentTime = new Date().toLocaleString("pl-PL");
+  return currentTime;
 }
 
-
-ticketForm.addEventListener('submit', addTicket)
+ticketForm.addEventListener("submit", addTicket);
