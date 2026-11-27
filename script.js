@@ -17,7 +17,24 @@ const renderTable = function () {
     row.insertCell().textContent = ticket.description;
     row.insertCell().textContent = ticket.priority;
     row.insertCell().textContent = ticket.date;
-    row.insertCell().textContent = ticket.status;
+
+    const select = document.createElement("select");
+    select.dataset.id = ticket.id;
+
+    select.append(
+      new Option("open", "open"),
+      new Option("in progress", "in progress"),
+      new Option("closed", "closed"),
+    );
+
+    select.value = ticket.status;
+    row.insertCell().append(select);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.dataset.id = ticket.id;
+    deleteBtn.className = "delete-btn";
+    row.insertCell().append(deleteBtn);
   });
 };
 
@@ -67,3 +84,22 @@ function getDate() {
 }
 
 ticketForm.addEventListener("submit", addTicket);
+tbody.addEventListener('change', function changeStatus (event) {
+  const ticketId = Number(event.target.dataset.id);
+  const ticket = tickets.find((s) => s.id === ticketId);
+  ticket.status = event.target.value;
+  renderTable();
+});
+
+tbody.addEventListener('click', function deleteTicket(event) {
+  const deleteBtn = event.target.closest(".delete-btn");
+  if (!deleteBtn) return;
+
+  const ticketId = Number(deleteBtn.dataset.id);
+  const index = tickets.findIndex((t) => t.id === ticketId);
+
+  if (index !== -1) {
+    tickets.splice(index, 1);
+    renderTable();
+  }
+});

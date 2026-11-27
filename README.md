@@ -20,3 +20,8 @@ For now, I store and display dates using `toLocaleString('pl-PL')`. If I add sor
 ### Displaying user input
 
 I use `textContent` instead of `innerHTML` to display ticket content. This treats user input as plain text, so any HTML or JavaScript entered in the form won't run when displayed in the table.
+
+### Event Delegation
+
+Event listeners are attached to `<tbody>` instead of individual buttons or selects so they keep working when table rows are dynamically added or re-rendered.
+
